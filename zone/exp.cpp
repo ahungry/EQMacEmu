@@ -62,7 +62,7 @@ float Mob::GetBaseEXP()
 	float basexp = exp * zemmod * server_bonus * npc_pct;
 	float logged_xp = basexp;
 
-	Log(Logs::General, Logs::EQMac, "Starting base exp is mob_level(%i)^2 * ZEM(%.0f) * server_bonus(%.2f) * npc_pct(%.2f) = %.0f exp", 
+	Log(Logs::General, Logs::EQMac, "Starting base exp is mob_level(%i)^2 * ZEM(%.0f) * server_bonus(%.2f) * npc_pct(%.2f) = %.0f exp",
 		level, zemmod, server_bonus, npc_pct, basexp);
 
 	if (ds_damage + npc_damage >= total_damage)
@@ -90,7 +90,7 @@ float Mob::GetBaseEXP()
 			basexp *= reduced_pct;
 		}
 
-		Log(Logs::General, Logs::EQMac, "%s was %0.1f percent damaged by a dire charmed pet (%d/%d). Exp gained is %0.1f percent of normal", 
+		Log(Logs::General, Logs::EQMac, "%s was %0.1f percent damaged by a dire charmed pet (%d/%d). Exp gained is %0.1f percent of normal",
 			GetName(), pet_dmg_pct * 100.0f, dire_pet_damage, total_damage, reduced_pct * 100.0f);
 	}
 
@@ -296,7 +296,7 @@ void Client::AddEXP(uint32 in_add_exp, uint8 conlevel, Mob* killed_mob, int16 av
 	uint32 new_exp = GetEXP() + add_exp;
 	uint32 old_aaexp = GetAAXP();
 	uint32 new_aaexp = old_aaexp + add_aaxp;
-	
+
 	if (new_aaexp < old_aaexp)
 		new_aaexp = old_aaexp;	//watch for wrap
 
@@ -305,7 +305,7 @@ void Client::AddEXP(uint32 in_add_exp, uint8 conlevel, Mob* killed_mob, int16 av
 		uint32 neededxp = GetEXPForLevel(GetLevel() + 1) - (GetEXP() + add_exp);
 		float pct_level_gain = static_cast<float>(add_exp) / static_cast<float>(requiredxp) * 100.0f;
 		float pct_aa_gain = static_cast<float>(add_aaxp) / static_cast<float>(RuleI(AA, ExpPerPoint)) * 100.0f;
-		Message(CC_Yellow, "[GM Debug] Final EXP awarded is %d (%0.2f%% of lvl) and %d AXP (%0.2f%% of AA). %d more EXP is needed for Level %d", 
+		Message(CC_Yellow, "[GM Debug] Final EXP awarded is %d (%0.2f%% of lvl) and %d AXP (%0.2f%% of AA). %d more EXP is needed for Level %d",
 			add_exp, pct_level_gain, add_aaxp, pct_aa_gain, neededxp, GetLevel()+1);
 	}
 
@@ -377,7 +377,7 @@ void Client::SetEXP(uint32 set_exp, uint32 set_aaxp, bool isrezzexp, bool is_spl
 	if(IsMule())
 		return;
 
-	Log(Logs::Detail, Logs::None, "Attempting to Set Exp for %s (XP: %u, AAXP: %u, Rez: %s, Split: %s)", 
+	Log(Logs::Detail, Logs::None, "Attempting to Set Exp for %s (XP: %u, AAXP: %u, Rez: %s, Split: %s)",
 		this->GetCleanName(), set_exp, set_aaxp, isrezzexp ? "true" : "false", is_split ? "true" : "false");
 	//max_AAXP = GetEXPForLevel(52) - GetEXPForLevel(51);	//GetEXPForLevel() doesn't depend on class/race, just level, so it shouldn't change between Clients
 	max_AAXP = max_AAXP = GetEXPForLevel(0, true);	//this may be redundant since we're doing this in Client::FinishConnState2()
@@ -386,7 +386,7 @@ void Client::SetEXP(uint32 set_exp, uint32 set_aaxp, bool isrezzexp, bool is_spl
 		return; // Must be invalid class/race
 	}
 
-	if ((set_exp + set_aaxp) > (m_pp.exp+m_pp.expAA)) 
+	if ((set_exp + set_aaxp) > (m_pp.exp+m_pp.expAA))
 	{
 		if (isrezzexp)
 		{
@@ -418,7 +418,7 @@ void Client::SetEXP(uint32 set_exp, uint32 set_aaxp, bool isrezzexp, bool is_spl
 	bool level_increase = true;
 	int8 level_count = 0;
 
-	while (set_exp >= GetEXPForLevel(check_level)) 
+	while (set_exp >= GetEXPForLevel(check_level))
 	{
 		check_level++;
 		if (check_level > 127)
@@ -479,7 +479,7 @@ void Client::SetEXP(uint32 set_exp, uint32 set_aaxp, bool isrezzexp, bool is_spl
 		{
 			Message_StringID(CC_Yellow, AA_CAP_REACHED);
 		}
-		
+
 		/* QS: PlayerLogAARate */
 		if (RuleB(QueryServ, PlayerLogAARate))
 		{
@@ -555,7 +555,7 @@ void Client::SetEXP(uint32 set_exp, uint32 set_aaxp, bool isrezzexp, bool is_spl
 					Message_StringID(CC_Yellow, GAINED_SHIELD_LEVEL);
 			}
 		}
-		else 
+		else
 		{
 			Message_StringID(CC_Yellow, LOSE_LEVEL, ConvertArray(check_level, val1));
 			/* Message(CC_Yellow, "You lost a level! You are now level %i!", check_level); */
@@ -631,7 +631,7 @@ void Client::SetLevel(uint8 set_level, bool command)
 		/* QS: PlayerLogLevels */
 		if (RuleB(QueryServ, PlayerLogLevels)){
 			std::string event_desc = StringFormat("Leveled UP :: to Level:%i from Level:%i in zoneid:%i", set_level, m_pp.level, this->GetZoneID());
-			QServ->PlayerLogEvent(Player_Log_Levels, this->CharacterID(), event_desc); 
+			QServ->PlayerLogEvent(Player_Log_Levels, this->CharacterID(), event_desc);
 		}
 	}
 	else if (set_level < m_pp.level){
@@ -689,7 +689,7 @@ void Client::SetLevel(uint8 set_level, bool command)
 uint32 Client::GetEXPForLevel(uint16 check_level, bool aa)
 {
 	// Warning: Changing anything in this method WILL cause levels to change in-game the first time a player
-	// gains or loses XP. 
+	// gains or loses XP.
 
 	// Note: Sony's AA exp was 15,000,000 but they also reduced AA exp by 20%, so the effective AAExp was 18,750,000
 	// This rule should be 18,750,000 to be non-custom since we do not reduce by 20%
@@ -707,7 +707,7 @@ uint32 Client::GetEXPForLevel(uint16 check_level, bool aa)
 	uint8 race = GetBaseRace();
 	if(race == HALFLING)
 		playermod *= 95.0;
-	else if(race == DARK_ELF || race == DWARF || race == ERUDITE || race == GNOME || 
+	else if(race == DARK_ELF || race == DWARF || race == ERUDITE || race == GNOME ||
 		race == HALF_ELF || race == HIGH_ELF || race == HUMAN || race == WOOD_ELF ||
 		race == VAHSHIR)
 		playermod *= 100.0;
@@ -765,14 +765,14 @@ uint32 Client::GetEXPForLevel(uint16 check_level, bool aa)
 	return finalxp;
 }
 
-void Client::AddLevelBasedExp(uint8 exp_percentage, uint8 max_level) { 
-	if (exp_percentage > 100) { exp_percentage = 100; } 
-	if (!max_level || GetLevel() < max_level) { max_level = GetLevel(); } 
-	uint32 newexp = GetEXP() + ((GetEXPForLevel(max_level + 1) - GetEXPForLevel(max_level)) * exp_percentage / 100); 
+void Client::AddLevelBasedExp(uint8 exp_percentage, uint8 max_level) {
+	if (exp_percentage > 100) { exp_percentage = 100; }
+	if (!max_level || GetLevel() < max_level) { max_level = GetLevel(); }
+	uint32 newexp = GetEXP() + ((GetEXPForLevel(max_level + 1) - GetEXPForLevel(max_level)) * exp_percentage / 100);
 	SetEXP(newexp, GetAAXP());
 }
 
-void Group::SplitExp(uint32 exp, Mob* killed_mob) 
+void Group::SplitExp(uint32 exp, Mob* killed_mob)
 {
 	if( killed_mob->CastToNPC()->MerchantType != 0 ) // Ensure NPC isn't a merchant
 		return;
@@ -903,8 +903,8 @@ bool Group::ProcessGroupSplit(Mob* killed_mob, struct GroupExpSplit_Struct& gs, 
 			if (members[x] != nullptr && members[x]->IsClient()) // If Group Member is Client
 			{
 				Client *cmember = members[x]->CastToClient();
-				if (cmember->CastToClient()->GetZoneID() == zone->GetZoneID() && 
-					cmember->IsInLevelRange(maxlevel) && 
+				if (cmember->CastToClient()->GetZoneID() == zone->GetZoneID() &&
+					cmember->IsInLevelRange(maxlevel) &&
 					(cmember->GetLevelCon(killed_mob->GetLevel()) != CON_GREEN || killed_mob->IsZomm()))
 				{
 					// get highest level of player who gets exp from this mob
@@ -989,7 +989,7 @@ bool Group::ProcessGroupSplit(Mob* killed_mob, struct GroupExpSplit_Struct& gs, 
 void Group::GiveGroupSplitExp(Mob* killed_mob, uint8 maxlevel, int16 weighted_levels, int conlevel, float groupexp, int8 close_count)
 {
 
-	// This loop figures out the split, and sends XP for each player that qualifies. (NPC is not green to the player, player is in the 
+	// This loop figures out the split, and sends XP for each player that qualifies. (NPC is not green to the player, player is in the
 	// zone where the kill occurred, is in range of the corpse, and is in level range with the rest of the group.)
 	for (int i = 0; i < MAX_GROUP_MEMBERS; i++)
 	{
@@ -997,50 +997,43 @@ void Group::GiveGroupSplitExp(Mob* killed_mob, uint8 maxlevel, int16 weighted_le
 		{
 			Client *cmember = members[i]->CastToClient();
 
-			if (cmember->CastToClient()->GetZoneID() == zone->GetZoneID())
-			{
-				if (cmember->IsInExpRange(killed_mob))
-				{
-					if (cmember->GetLevelCon(killed_mob->GetLevel()) != CON_GREEN || killed_mob->IsZomm())
-					{
-						if (cmember->IsInLevelRange(maxlevel))
-						{
-							float split_percent = static_cast<float>(cmember->GetLevel() + 5u) / static_cast<float>(weighted_levels + 5*close_count);
-							float splitgroupxp = groupexp * split_percent;
-							if (splitgroupxp < 1)
-								splitgroupxp = 1;
+			if (!(cmember->CastToClient()->GetZoneID() == zone->GetZoneID())) {
+        Log(Logs::Detail, Logs::Group, "%s is not in the zone. They won't receive group XP.", cmember->GetName());
+        continue;
+      }
 
-							int local_conlevel = conlevel;
-							if (conlevel == CON_GREEN)
-								local_conlevel = Mob::GetLevelCon(cmember->GetLevel(), killed_mob->GetLevel());
+      if (!(cmember->IsInExpRange(killed_mob))) {
+        Log(Logs::Detail, Logs::Group, "%s is out of physical range. They won't receive group XP.", cmember->GetName());
+        continue;
+      }
 
-							Log(Logs::Detail, Logs::Group, "%s splits %0.2f with the rest of the group. Their share: %0.2f (%0.2f PERCENT)  weighted_levels: %i;  close_count: %i", cmember->GetName(), groupexp, splitgroupxp, split_percent * 100, weighted_levels, close_count);
-							cmember->AddEXP(static_cast<uint32>(splitgroupxp), local_conlevel, killed_mob, weighted_levels/close_count, close_count == 1 ? false : true);
-						}
-						else
-						{
-							Log(Logs::Detail, Logs::Group, "%s is too low in level to gain XP from this group.", cmember->GetName());
-						}
-					}
-					else
-					{
-						Log(Logs::Detail, Logs::Group, "%s is green to %s. They won't receive group XP.", killed_mob->GetName(), cmember->GetName());
-					}
-				}
-				else
-				{
-					Log(Logs::Detail, Logs::Group, "%s is out of physical range. They won't receive group XP.", cmember->GetName());
-				}
-			}
-			else 
-			{
-				Log(Logs::Detail, Logs::Group, "%s is not in the zone. They won't receive group XP.", cmember->GetName());
-			}
-		}
-	}
+      if (!(cmember->GetLevelCon(killed_mob->GetLevel()) != CON_GREEN || killed_mob->IsZomm())) {
+        Log(Logs::Detail, Logs::Group, "%s is green to %s. They won't receive group XP.", killed_mob->GetName(), cmember->GetName());
+        continue;
+      }
+
+      if (!(cmember->IsInLevelRange(maxlevel))) {
+        Log(Logs::Detail, Logs::Group, "%s is too low in level to gain XP from this group.", cmember->GetName());
+        continue;
+      }
+
+      // All negation cases accounted for
+      float split_percent = static_cast<float>(cmember->GetLevel() + 5u) / static_cast<float>(weighted_levels + 5*close_count);
+      float splitgroupxp = groupexp * split_percent;
+      if (splitgroupxp < 1)
+        splitgroupxp = 1;
+
+      int local_conlevel = conlevel;
+      if (conlevel == CON_GREEN)
+        local_conlevel = Mob::GetLevelCon(cmember->GetLevel(), killed_mob->GetLevel());
+
+      Log(Logs::Detail, Logs::Group, "%s splits %0.2f with the rest of the group. Their share: %0.2f (%0.2f PERCENT)  weighted_levels: %i;  close_count: %i", cmember->GetName(), groupexp, splitgroupxp, split_percent * 100, weighted_levels, close_count);
+      cmember->AddEXP(static_cast<uint32>(splitgroupxp), local_conlevel, killed_mob, weighted_levels/close_count, close_count == 1 ? false : true);
+    }
+  }
 }
 
-void Raid::SplitExp(uint32 exp, Mob* killed_mob) 
+void Raid::SplitExp(uint32 exp, Mob* killed_mob)
 {
 	if (killed_mob->CastToNPC()->MerchantType != 0) // Ensure NPC isn't a merchant
 		return;
@@ -1053,9 +1046,9 @@ void Raid::SplitExp(uint32 exp, Mob* killed_mob)
 	uint16 weighted_levels = 0;
 
 	//Grabs membercount and maxlevel.
-	for (int i = 0; i < MAX_RAID_MEMBERS; i++) 
+	for (int i = 0; i < MAX_RAID_MEMBERS; i++)
 	{
-		if (members[i].member != nullptr) 
+		if (members[i].member != nullptr)
 		{
 			Client *cmember = members[i].member;
 			if (cmember && cmember->GetZoneID() == zone->GetZoneID())
@@ -1077,7 +1070,7 @@ void Raid::SplitExp(uint32 exp, Mob* killed_mob)
 		return;
 
 	//Check to make sure we're all in level range now that we know our maxlevel.
-	for (int i = 0; i < MAX_RAID_MEMBERS; i++) 
+	for (int i = 0; i < MAX_RAID_MEMBERS; i++)
 	{
 		if (members[i].member != nullptr)
 		{
@@ -1104,13 +1097,13 @@ void Raid::SplitExp(uint32 exp, Mob* killed_mob)
 	Log(Logs::Detail, Logs::Group, "Raid XP: %d Final XP: %0.2f", exp, groupexp);
 
 	//Assigns XP if the qualifications are met.
-	for (int i = 0; i < MAX_RAID_MEMBERS; i++) 
+	for (int i = 0; i < MAX_RAID_MEMBERS; i++)
 	{
 		if (members[i].member != nullptr)
 		{
 			Client *cmember = members[i].member;
-			if(cmember && cmember->GetZoneID() == zone->GetZoneID() && 
-				(cmember->GetLevelCon(killed_mob->GetLevel()) != CON_GREEN || killed_mob->IsZomm()) && 
+			if(cmember && cmember->GetZoneID() == zone->GetZoneID() &&
+				(cmember->GetLevelCon(killed_mob->GetLevel()) != CON_GREEN || killed_mob->IsZomm()) &&
 				cmember->IsInExpRange(killed_mob))
 			{
 				if (cmember->IsInLevelRange(maxlevel))
@@ -1149,7 +1142,7 @@ uint32 Client::GetCharMaxLevelFromQGlobal() {
 	while(iter != globalMap.end()) {
 		if((*iter).name.compare("CharMaxLevel") == 0){
 			return atoi((*iter).value.c_str());
-		} 
+		}
 		++iter;
 		++gcount;
 	}
@@ -1167,7 +1160,7 @@ bool Client::IsInExpRange(Mob* defender)
 	float t1, t2;
 	t1 = defender->GetX() - GetX();
 	t2 = defender->GetY() - GetY();
-	
+
 	if (t1 > exprange || t2 > exprange || t1 < -exprange || t2 < -exprange) {
 		//_log(CLIENT__EXP, "%s is out of range. distances (%.3f,%.3f,%.3f), range %.3f No XP will be awarded.", defender->GetName(), t1, t2, t3, exprange);
 		return false;
@@ -1180,7 +1173,7 @@ bool Client::IsInLevelRange(uint8 maxlevel)
 {
 	if(IsMule())
 		return false;
-	
+
 	// EQ supposedly had a minimum group range at very low levels.  What this should be is not known exactly.
 	// The EQ Official Player's Guide says it was 3 but a PoP era log shows a level 10 grouping with a level 6.
 	// I have a hunch they may have enlarged it in Luclin along with the newbie changes.  Setting this to 4 for now
