@@ -997,7 +997,7 @@ void Group::GiveGroupSplitExp(Mob* killed_mob, uint8 maxlevel, int16 weighted_le
 		{
 			Client *cmember = members[i]->CastToClient();
 
-			if (!(cmember->CastToClient()->GetZoneID() == zone->GetZoneID())) {
+      if (!(cmember->CastToClient()->GetZoneID() == zone->GetZoneID())) {
         Log(Logs::Detail, Logs::Group, "%s is not in the zone. They won't receive group XP.", cmember->GetName());
         continue;
       }
